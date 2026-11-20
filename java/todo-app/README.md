@@ -147,4 +147,4 @@ This project targets Spring Boot 4.0. If you're coming from Spring Boot 3, note 
 
 ## License
 
-Licensed under the GNU General Public License. See [LICENSE](LICENSE) for details.
+Licensed under the GNU General Public License v3.0. See [LICENSE](../../LICENSE) for details.
