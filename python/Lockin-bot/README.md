@@ -32,8 +32,8 @@ python-vision/
 1. Get the code and move into the project folder:
 
    ```bash
-   git clone <repository-url>
-   cd python-vision
+   git clone https://github.com/Kriicky/Projects.git
+   cd Projects/python/Lockin-bot
    ```
 
 2. Create and activate a virtual environment:
