@@ -19,7 +19,7 @@ A webcam-based focus detector that checks whether you're paying attention to you
 ## Project Structure
 
 ```
-python-vision/
+Lockin-bot/
 ├── main.py            # Webcam capture and focus detection
 ├── server.py          # Flask server that serves the alert page
 ├── templates/         # HTML for the alert page
