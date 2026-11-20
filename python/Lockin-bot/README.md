@@ -1,4 +1,4 @@
-# Python Vision Focus Detector
+# Lockin-bot
 
 A webcam-based focus detector that checks whether you're paying attention to your screen. If you look away or leave your desk for too long, it opens an alert page in your browser that plays an alarm and tells you to get back to work.
 
