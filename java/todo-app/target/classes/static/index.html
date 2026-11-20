@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        .task { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
+        .task input[type="checkbox"] { margin-right: 10px; }
+        .task .title { flex: 1; }
+        .task .title.completed { text-decoration: line-through; color: #999; }
+        .task button { margin-left: 10px; }
+        #new-task { display: flex; margin-bottom: 20px; }
+        #new-task input { flex: 1; padding: 10px; margin-right: 10px; }
+        #new-task button { padding: 10px 20px; }
+    </style>
+</head>
+<body>
+    <h1>To-Do App</h1>
+    
+    <div id="new-task">
+        <input type="text" id="task-input" placeholder="New task...">
+        <button onclick="addTask()">Add</button>
+    </div>
+    
+    <div id="tasks"></div>
+
+    <script>
+        async function loadTasks() {
+            const response = await fetch('/tasks');
+            const tasks = await response.json();
+            renderTasks(tasks);
+        }
+
+        function renderTasks(tasks) {
+            const container = document.getElementById('tasks');
+            container.innerHTML = '';
+            tasks.forEach(task => {
+                const div = document.createElement('div');
+                div.className = 'task';
+                div.innerHTML = `
+                    <input type="checkbox" ${task.completed ? 'checked' : ''} 
+                           onchange="toggleTask(${task.id}, this.checked)">
+                    <span class="title ${task.completed ? 'completed' : ''}">${task.title}</span>
+                    <button onclick="deleteTask(${task.id})">Delete</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        async function addTask() {
+            const input = document.getElementById('task-input');
+            const title = input.value.trim();
+            if (!title) return;
+            
+            const response = await fetch('/tasks', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: title })
+            });
+            
+            if (response.ok) {
+                input.value = '';
+                loadTasks();
+            }
+        }
+
+        async function toggleTask(id, completed) {
+            const response = await fetch(`/tasks/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id, completed: completed })
+            });
+            
+            if (response.ok) {
+                loadTasks();
+            }
+        }
+
+        async function deleteTask(id) {
+            const response = await fetch(`/tasks/${id}`, {
+                method: 'DELETE'
+            });
+            
+            if (response.ok) {
+                loadTasks();
+            }
+        }
+
+        document.getElementById('task-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addTask();
+        });
+
+        loadTasks();
+    </script>
+</body>
+</html>
